@@ -113,8 +113,8 @@ namespace gazebo
       boost::mutex::scoped_lock lock(this->update_mutex);
 
       // PID controller
-      this->target_position_[0] = 3.14*this->matrix[0][3]/180.0;
-      this->target_position_[1] = 3.14*this->matrix[1][3]/180.0;
+      this->target_position_[0] = 3.14*10.0/180.0;
+      this->target_position_[1] = 3.14*20.0/180.0;
 
       common::Time current_time = this->model->GetWorld()->GetSimTime();
       double dt    = current_time.Double()
