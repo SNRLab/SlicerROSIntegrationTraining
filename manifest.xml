@@ -1,0 +1,19 @@
+<package>
+  <description brief="OpenIGTLinkPluginForROS">
+
+     OpenIGTLinkPluginForROS
+
+  </description>
+  <author>Atsushi Yamada</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/OpenIGTLinkPluginForROS</url>
+  <depend package="gazebo"/>
+
+  <export>
+    <gazebo plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
+  </export>
+
+</package>
+
+
