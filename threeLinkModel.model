@@ -1,0 +1,136 @@
+<gazebo version='1.0'>
+  <model name='ThreeLinkRobot'>
+    <link name='base'>
+      <inertial mass='101.0'>
+        <origin pose='0 0 0.00099 0 0 0'/>
+        <inertia ixx='1.11' ixy='0' ixz='0' iyy='100.11' iyz='0' izz='1.01'/>
+      </inertial>
+      <collision name='base_geom' >
+        <origin pose='0 0 0.6 0 3.14 0'/>
+        <geometry>
+		<box size='0.05 0.05 0.01' />          
+        </geometry>
+      </collision>
+      
+      <visual name='base_visual'>
+        <origin pose='0 0 0.6 0 3.14 0'/>
+        <geometry>
+		<box size='0.05 0.05 0.01' />          
+        </geometry>
+        <material script='Gazebo/Red'/>
+      </visual>
+    </link>
+
+   <link name='link1'>
+      <origin pose='0 0 0.599 0 0 0'/>
+      <inertial mass='0.05'>
+        <origin pose='0.0 0 0 0 0 0'/>
+        <inertia ixx='0.011' ixy='0' ixz='0' iyy='0.0225' iyz='0' izz='0.0135'/>
+      </inertial>
+      <collision name='link1_geom' >
+        <origin pose='0.0 0 0 -1.57 0 0'/>
+        <geometry>
+		<cylinder radius='0.05' length='0.01' />          
+        </geometry>
+      </collision>
+      <visual name='link1_visual'>
+        <origin pose='0.0 0 0 -1.57 0 0'/>
+        <geometry>
+		<cylinder radius='0.05' length='0.01' />          
+        </geometry>
+        <material script='Gazebo/Blue'/>
+      </visual>
+
+    </link>
+
+
+   <link name='link2'>
+      <origin pose='0 0 0.592 0 0 0'/>
+      <inertial mass='0.05'>
+        <origin pose='0.0 0 0 0 0 0'/>
+        <inertia ixx='0.011' ixy='0' ixz='0' iyy='0.0225' iyz='0' izz='0.0135'/>
+      </inertial>
+      <collision name='link2_geom' >
+        <origin pose='0.0 0 0 -1.57 0 0'/>
+        <geometry>
+		<cylinder radius='0.05' length='0.01' />          
+        </geometry>
+      </collision>
+      <visual name='link2_visual'>
+        <origin pose='0.0 0 0 -1.57 0 0'/>
+        <geometry>
+		<cylinder radius='0.05' length='0.01' />          
+        </geometry>
+        <material script='Gazebo/Yellow'/>
+      </visual>
+
+    </link>
+
+   <link name='link3'>
+      <origin pose='0 0 0.585 0 0 0'/>
+      <inertial mass='0.05'>
+        <origin pose='0.0 0 0 0 0 0'/>
+        <inertia ixx='0.011' ixy='0' ixz='0' iyy='0.0225' iyz='0' izz='0.0135'/>
+      </inertial>
+      <collision name='link3_geom' >
+        <origin pose='0.0 0 0 -1.57 0 0'/>
+        <geometry>
+		<cylinder radius='0.05' length='0.01' />          
+        </geometry>
+      </collision>
+      <visual name='link3_visual'>
+        <origin pose='0.0 0 0 -1.57 0 0'/>
+        <geometry>
+		<cylinder radius='0.05' length='0.01' />          
+        </geometry>
+        <material script='Gazebo/Blue'/>
+      </visual>
+
+    </link>
+
+    <joint name='base_joint' type='revolute'>
+      <origin pose='0 0 0 0 0 0' /> 
+      <parent link='world'/>
+      <child link='base'/>
+      <axis xyz='0 0 1'>
+        <limit lower='0' upper='0'/>
+      </axis>
+    </joint>
+
+    <joint name='link1_joint' type='revolute'>
+      <!-- origin pose= 'rotational axis(red green blue) rotational angle(red green blue)' -->
+      <origin pose='0 0 0 0 0 0' /> 
+      <parent link='base'/>
+      <child link='link1'/>
+      <axis xyz='1 0 0'>
+<!--	<limit lower='1.57' upper='1.57' /> -->
+      </axis>
+    </joint>
+
+    <joint name='link2_joint' type='revolute'>
+      <origin pose='0 0 0 0 0 0' /> 
+      <parent link='link1'/>
+      <child link='link2'/>
+      <axis xyz='1 0 0'>
+      </axis>
+    </joint>
+
+    <joint name='link3_joint' type='revolute'>
+      <origin pose='0 0 0 0 0 0' /> 
+      <parent link='link2'/>
+      <child link='link3'/>
+      <axis xyz='1 0 0'>
+      </axis>
+    </joint>
+
+<!--    
+<plugin filename="libOpenIGTLinkPluginForROS.so" name="OpenIGTLinkPluginForROS">
+<joint1>link1_joint</joint1>
+<joint2>link2_joint</joint2>
+<joint3>link3_joint</joint3>
+</plugin>
+-->
+
+  </model>
+
+</gazebo>
