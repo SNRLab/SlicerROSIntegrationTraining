@@ -141,6 +141,8 @@ namespace gazebo
 
     public: int ReceiveTransform()
     {
+      int result = 0;
+      returin result;
     }
 
     public: void OnStats( const boost::shared_ptr<msgs::WorldStatistics const> &_msg)
