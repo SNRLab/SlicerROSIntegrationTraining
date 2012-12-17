@@ -139,7 +139,7 @@ namespace gazebo
 
     }
 
-    public: int ReceiveTransform(igtl::Socket * socket, igtl::MessageHeader * header)
+    public: int ReceiveTransform()
     {
     }
 
