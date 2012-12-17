@@ -29,19 +29,10 @@
 #include <boost/thread.hpp>
 #include "boost/thread/mutex.hpp"
 
-// for OpenIGTLink Receiver
 #include <iostream>
 #include <math.h>
 #include <cstdlib>
 #include <cstring>
-
-#include "igtlOSUtil.h"
-#include "igtlMessageHeader.h"
-#include "igtlTransformMessage.h"
-#include "igtlImageMessage.h"
-#include "igtlServerSocket.h"
-#include "igtlStatusMessage.h"
-#include "igtlPositionMessage.h"
 
 namespace gazebo
 {
@@ -93,85 +84,8 @@ namespace gazebo
           this->FindJointByParam(_sdf, this->controlled_joint_[1],
                              "joint2") &&
           this->FindJointByParam(_sdf, this->controlled_joint_[2],
-                             "joint3")
-          /*
-          &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[3],
-                             "joint4") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[4],
-                             "joint5") && 
-          this->FindJointByParam(_sdf, this->controlled_joint_[5],
-                             "joint6") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[6],
-                             "joint7") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[7],
-                             "joint8") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[8],
-                             "joint9") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[9],
-                             "joint10") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[10],
-                             "joint11") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[11],
-                             "joint12") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[12],
-                             "joint13") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[13],
-                             "joint14") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[14],
-                             "joint15") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[15],
-                             "joint16") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[16],
-                             "joint17") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[17],
-                             "joint18") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[18],
-                             "joint19") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[19],
-                             "joint20") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[20],
-                             "joint21") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[21],
-                             "joint22") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[22],
-                             "joint23") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[23],
-                             "joint24") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[24],
-                             "joint25") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[25],
-                             "joint26") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[26],
-                             "joint27") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[27],
-                             "joint28") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[28],
-                             "joint29") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[29],
-                             "joint30") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[30],
-                             "joint31") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[31],
-                             "joint32") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[32],
-                             "joint33") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[33],
-                             "joint34") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[34],
-                             "joint35") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[35],
-                             "joint36") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[36],
-                             "joint37") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[37],
-                             "joint38") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[38],
-                             "joint39") &&
-          this->FindJointByParam(_sdf, this->controlled_joint_[39],
-                             "joint40")*/ 
-    )
-
+                             "joint3")    
+          )
         return true;
       else
         return false;
@@ -216,7 +130,7 @@ namespace gazebo
       double dt    = current_time.Double()
                    - this->last_update_time_.Double();
       
-      for(int i = 0; i < 20; i++)
+      for(int i = 0; i < 3; i++)
       {
       this->pid[i].SetCmd(this->target_position_[0]);
       this->pid1[i].SetCmd(this->target_position_[1]);
@@ -229,14 +143,6 @@ namespace gazebo
                    - target_position_[1];
       this->pid1[i].Update(this->error[i], dt);
       this->controlled_joint_[i]->SetForce(0, this->pid[i].GetCmd()+this->pid1[i].GetCmd());
-      }
-      for(int i = 20; i < 40; i++)
-      {
-      this->pid[i].SetCmd(this->target_position_[1]);
-      this->error[i] = this->controlled_joint_[i]->GetAngle(0).GetAsRadian()
-                   - target_position_[1];
-      this->pid[i].Update(this->error[i], dt);
-      this->controlled_joint_[i]->SetForce(0, this->pid[i].GetCmd());
       }
       
       this->last_update_time_ = current_time;
@@ -276,17 +182,6 @@ namespace gazebo
     private: boost::mutex update_mutex;
     private: ros::CallbackQueue queue_;
     private: boost::thread callback_queue_thread_;
-
-    // for OpenIGTLink
-    int interval;
-    int r;
-    igtl::ServerSocket::Pointer serverSocket;
-    igtl::Socket::Pointer socket;
-    igtl::TransformMessage::Pointer transMsg;
-    igtl::PositionMessage::Pointer positionMsg;
-
-    // communication matrix between OpenIGTLink receiver and creating force vectors
-    igtl::Matrix4x4 matrix;
 
     int communicationFlag;
     int testCount;

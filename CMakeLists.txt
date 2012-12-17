@@ -9,17 +9,6 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 #  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
 #set(ROS_BUILD_TYPE RelWithDebInfo)
 
-# OpenIGTLink stuff
-FIND_PACKAGE(OpenIGTLink REQUIRED)
-
-include(
-	${OpenIGTLink_USE_FILE}
-)
-
-include_directories(
-	${OpenIGTLink_INCLUDE_DIRS}
-)
-
 rosbuild_init()
 
 #set the default path for built executables to the "bin" directory
@@ -40,4 +29,3 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 rosbuild_add_library(OpenIGTLinkPluginForROS src/OpenIGTLinkPluginForROS.cpp)
-target_link_libraries(OpenIGTLinkPluginForROS OpenIGTLink)
