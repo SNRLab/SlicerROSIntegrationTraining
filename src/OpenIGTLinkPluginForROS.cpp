@@ -24,6 +24,8 @@
 #include <cstdlib>
 #include <cstring>
 
+// for OpenIGTLink Receiver
+
 namespace gazebo
 {
   class MoveModel : public ModelPlugin
