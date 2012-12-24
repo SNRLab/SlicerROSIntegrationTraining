@@ -123,13 +123,11 @@
       </axis>
     </joint>
 
-<!--    
 <plugin filename="libOpenIGTLinkPluginForROS.so" name="OpenIGTLinkPluginForROS">
 <joint1>link1_joint</joint1>
 <joint2>link2_joint</joint2>
 <joint3>link3_joint</joint3>
 </plugin>
--->
 
   </model>
 
