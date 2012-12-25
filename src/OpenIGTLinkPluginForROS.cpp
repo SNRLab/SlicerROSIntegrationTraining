@@ -169,13 +169,31 @@ namespace gazebo
         transMsg->GetMatrix(matrix);
         //igtl::PrintMatrix(matrix);
 
-        this->target_position_[0] = matrix[0][3];
-        this->target_position_[1] = matrix[1][3];
-        this->target_position_[2] = matrix[2][3];
-        
+        this->target_position_[0] = matrix[0][3] / 180.0 * M_PI;
+        this->target_position_[1] = matrix[1][3] / 180.0 * M_PI;
+        this->target_position_[2] = matrix[2][3] / 180.0 * M_PI;
+
         result = 1;
       }
       return result;
+    }
+
+    public: void SendTransform(igtl::Socket *socket)
+    {
+      //Send joint angles
+      igtl::TransformMessage::Pointer transMsg;
+      transMsg = igtl::TransformMessage::New();
+      transMsg->SetDeviceName("JointAngle");
+
+      igtl::Matrix4x4 sendMatrix;
+      igtl::IdentityMatrix(sendMatrix);
+      sendMatrix[0][3] = this->controlled_joint_[0]->GetAngle(0).GetAsRadian() / M_PI * 180.0;
+      sendMatrix[1][3] = this->controlled_joint_[1]->GetAngle(0).GetAsRadian() / M_PI * 180.0;
+      sendMatrix[2][3] = this->controlled_joint_[2]->GetAngle(0).GetAsRadian() / M_PI * 180.0;
+
+      transMsg->SetMatrix(sendMatrix);
+      transMsg->Pack();
+      socket->Send(transMsg->GetPackPointer(), transMsg->GetPackSize());
     }
 
     public: void OnStats( const boost::shared_ptr<msgs::WorldStatistics const> &_msg)
@@ -218,10 +236,7 @@ namespace gazebo
           igtl::TimeStamp::Pointer ts;
           ts = igtl::TimeStamp::New();
 
-          //------------------------------------------------------------
-          // loop
-          for (int i = 0; i < 100; i ++){
-
+          while(1){
             // Initialize receive buffer
             headerMsg->InitPack();
 
@@ -255,7 +270,9 @@ namespace gazebo
             if (strcmp(headerMsg->GetDeviceType(), "TRANSFORM") == 0){
               // mutex lock
               boost::mutex::scoped_lock lock(this->update_mutex);
-              ReceiveTransform(socket, headerMsg);
+              if (ReceiveTransform(socket, headerMsg)){
+                SendTransform(socket);
+              }
             }
           }
         }
